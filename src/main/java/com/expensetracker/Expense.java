@@ -21,6 +21,14 @@ public class Expense {
         this.expenseDate = expenseDate;
     }
 
+    public Expense(int id,String title, String category, BigDecimal amount, LocalDate expenseDate){
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.amount = amount;
+        this.expenseDate = expenseDate;
+    }
+
     public int getId() {
         return id;
     }

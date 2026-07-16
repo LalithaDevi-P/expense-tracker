@@ -12,8 +12,7 @@ public class Main {
            System.out.println("Connection failed");
        }
 
-       ExpenseDAO expenseDAO = new ExpenseDAOImpl();
-       Expense expense = new Expense("Coffee", "Food", new BigDecimal("120.50"), LocalDate.now());
-       expenseDAO.addExpense(expense);
+      Menu menu = new Menu();
+       menu.start();
     }
 }
