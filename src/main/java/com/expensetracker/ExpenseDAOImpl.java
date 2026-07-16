@@ -21,7 +21,7 @@ public class ExpenseDAOImpl implements ExpenseDAO{
             preparedStatement.setBigDecimal(3, expense.getAmount());
             preparedStatement.setDate(4, java.sql.Date.valueOf(expense.getExpenseDate()));
             int rows = preparedStatement.executeUpdate();
-            System.out.println(rows + " successfully inserted");
+            System.out.println(rows + " row successfully inserted");
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -53,16 +53,61 @@ public class ExpenseDAOImpl implements ExpenseDAO{
 
     @Override
     public Expense getExpenseById(int id) {
+        String sql = "select * from expenses where id = ?";
+//        Expense expense = new Expense();
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                Expense expense = new Expense();
+                expense.setId(rs.getInt("id"));
+                expense.setTitle(rs.getString("title"));
+                expense.setCategory(rs.getString("category"));
+                expense.setAmount(rs.getBigDecimal("amount"));
+                expense.setExpenseDate(rs.getDate("expense_date").toLocalDate());
+                return expense;
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
         return null;
     }
 
     @Override
     public void updateExpense(Expense expense) {
-
+         String sql = """
+                 update expenses set title = ?,
+                 category = ?,
+                 amount = ?
+                 expense_date = ?""";
+         try{
+             Connection con = DBConnection.getConnection();
+             PreparedStatement preparedStatement = con.prepareStatement(sql);
+             preparedStatement.setString(1, expense.getTitle());
+             preparedStatement.setString(2, expense.getCategory());
+             preparedStatement.setBigDecimal(3, expense.getAmount());
+             preparedStatement.setDate(4, java.sql.Date.valueOf(expense.getExpenseDate()));
+             int rows = preparedStatement.executeUpdate();
+             System.out.println(rows + " row updated");
+         }catch (Exception e){
+             System.out.println(e);
+         }
     }
 
     @Override
     public void deleteExpense(int id) {
+        String sql = "delete from expenses where id = ?";
+        try{
+            Connection con = DBConnection.getConnection();
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int rows = preparedStatement.executeUpdate();
+            System.out.println(rows + " deleted successfully");
+        }catch (Exception e){
+            System.out.println(e);
+        }
 
     }
 }

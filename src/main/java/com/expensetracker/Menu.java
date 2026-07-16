@@ -19,7 +19,10 @@ public class Menu {
             System.out.println("\n========== Expense Tracker ==========");
             System.out.println("1. Add Expense");
             System.out.println("2. View All Expenses");
-            System.out.println("3. Exit");
+            System.out.println("3. View Expense By Id");
+            System.out.println("4. Update Expense");
+            System.out.println("5. Delete Expense");
+            System.out.println("6. Exit");
             System.out.print("Enter Choice : ");
 
             int choice = scanner.nextInt();
@@ -44,14 +47,15 @@ public class Menu {
                     Expense expense = new Expense(title, category, amt, expenseDate);
 
                     expenseDAO.addExpense(expense);
+                    break;
 
                 case 2:
                     List<Expense> expenses = expenseDAO.getAllExpenses();
-                    if(expenses.isEmpty()){
+                    if (expenses.isEmpty()) {
                         System.out.println("Expenses not found");
-                    }else{
+                    } else {
                         System.out.println("==================");
-                        for (Expense exp : expenses){
+                        for (Expense exp : expenses) {
                             System.out.println(exp);
                         }
                     }
@@ -59,6 +63,49 @@ public class Menu {
                     break;
 
                 case 3:
+                System.out.print("Enter id to search");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                Expense expense1 = expenseDAO.getExpenseById(id);
+                if(expense1 != null) {
+                    System.out.println(expense1);
+                }else{
+                    System.out.println("Expense not found");
+                }
+                break;
+
+                case 4:
+                    System.out.print("Enter Expense ID : ");
+                    int updateId=scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.print("New Title : ");
+                    String newTitle=scanner.nextLine();
+
+                    System.out.print("New Category : ");
+                    String newCategory=scanner.nextLine();
+
+                    System.out.print("New Amount : ");
+                    BigDecimal newAmount=scanner.nextBigDecimal();
+                    scanner.nextLine();
+
+                    System.out.print("New Date (yyyy-mm-dd): ");
+                    LocalDate newDate=LocalDate.parse(scanner.nextLine());
+
+                    Expense updateExpense = new Expense(newTitle, newCategory, newAmount, newDate);
+                    updateExpense.setId(updateId);
+
+                    expenseDAO.updateExpense(updateExpense);
+                    break;
+
+                case 5:
+                    System.out.println("Enter the id to delete");
+                    int delId = scanner.nextInt();
+                    scanner.nextLine();
+                    expenseDAO.deleteExpense(delId);
+                    break;
+
+                case 6:
                     System.out.println("Thank You!");
                     return;
 
