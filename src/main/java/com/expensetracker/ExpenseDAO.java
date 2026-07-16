@@ -1,4 +1,12 @@
 package com.expensetracker;
 
-public class ExpenseDAO {
+import java.util.List;
+public interface ExpenseDAO {
+    void addExpense(Expense expense);
+    List<Expense> getAllExpense();
+    Expense getExpenseById(int id);
+    void updateExpense(Expense expense);
+    void deleteExpense(int id);
+
+
 }
